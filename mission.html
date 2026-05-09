@@ -365,6 +365,9 @@
 <body>
 
 <div class="side-tab" onclick="openPanel()">기록</div>
+  <div class="item-tab" onclick="openItemPanel()">
+  쿠폰함
+</div>
 <div id="hintMini" class="hint-mini">힌트 2/2</div>
 
 <div id="panelBg" class="panel-bg" onclick="closePanel()">
@@ -375,6 +378,45 @@
   </div>
 </div>
 
+<!-- ↓↓↓ 여기부터 새로 추가 ↓↓↓ -->
+
+<div id="itemPanelBg"
+     class="item-panel-bg"
+     onclick="closeItemPanel()">
+
+  <div class="item-panel"
+       onclick="event.stopPropagation()">
+
+    <h2>🎁 쿠폰함</h2>
+
+    <div id="itemContent"></div>
+
+    <button class="close-btn"
+            onclick="closeItemPanel()">
+      닫기
+    </button>
+
+  </div>
+</div>
+<div id="itemPanelBg"
+     class="item-panel-bg"
+     onclick="closeItemPanel()">
+
+  <div class="item-panel"
+       onclick="event.stopPropagation()">
+
+    <h2>🎁 쿠폰함</h2>
+
+    <div id="itemContent"></div>
+
+    <button class="close-btn"
+            onclick="closeItemPanel()">
+      닫기
+    </button>
+
+  </div>
+</div>
+  
 <div class="device-bg">
   <main class="page">
 
@@ -693,6 +735,59 @@ function showRewardRoulette(reward) {
 function closeRewardRoulette() {
   const bg = document.getElementById("rouletteBg");
   if (bg) bg.style.display = "none";
+}
+function renderItems() {
+  const itemContent =
+    document.getElementById("itemContent");
+
+  if (!itemContent) return;
+
+  const game = getGame();
+  const items = game.items || {};
+
+  let html = "";
+
+  COUPON_ITEMS.forEach((item) => {
+    const count = items[item.id] || 0;
+
+    if (count > 0) {
+      html += `
+        <div class="record-box">
+          <b>
+            ${item.emoji}
+            ${item.name}
+          </b><br />
+
+          보유 수량: ${count}개
+        </div>
+      `;
+    }
+  });
+
+  if (!html) {
+    html = `
+      <div class="record-box">
+        아직 획득한 쿠폰이 없습니다.<br />
+        미션 성공 후 룰렛을 돌려보세요!
+      </div>
+    `;
+  }
+
+  itemContent.innerHTML = html;
+}
+
+function openItemPanel() {
+  renderItems();
+
+  document.getElementById(
+    "itemPanelBg"
+  ).style.display = "flex";
+}
+
+function closeItemPanel() {
+  document.getElementById(
+    "itemPanelBg"
+  ).style.display = "none";
 }
   
 </script>
