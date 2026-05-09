@@ -365,38 +365,109 @@
 <script>
 const mission = getMission();
 
-document.title = mission.title.replace(/<br \/>/g, " ");
+const REQUIRED_WAIT_MISSION_ID = 5;
+const REQUIRED_GLOBAL_MINUTES = 20;
 
-document.getElementById("emoji").innerHTML = mission.emoji;
-document.getElementById("title").innerHTML = mission.title;
-document.getElementById("subtitle").innerHTML = mission.subtitle;
-document.getElementById("story").innerHTML = mission.story;
-document.getElementById("mission").innerHTML = mission.mission;
-document.getElementById("timeLimit").innerHTML = mission.timeLimit + "분";
-document.getElementById("difficulty").innerHTML = mission.difficulty;
-document.getElementById("location").innerHTML = mission.location;
-document.getElementById("successCondition").innerHTML = mission.successCondition;
-document.getElementById("safety").innerHTML = mission.safety;
+function showMissionContent() {
+  document.title = mission.title.replace(/<br \/>/g, " ");
 
-const stepsEl = document.getElementById("steps");
+  document.getElementById("emoji").innerHTML = mission.emoji;
+  document.getElementById("title").innerHTML = mission.title;
+  document.getElementById("subtitle").innerHTML = mission.subtitle;
+  document.getElementById("story").innerHTML = mission.story;
+  document.getElementById("mission").innerHTML = mission.mission;
+  document.getElementById("timeLimit").innerHTML = mission.timeLimit + "분";
+  document.getElementById("difficulty").innerHTML = mission.difficulty;
+  document.getElementById("location").innerHTML = mission.location;
+  document.getElementById("successCondition").innerHTML = mission.successCondition;
+  document.getElementById("safety").innerHTML = mission.safety;
 
-mission.steps.forEach((step, index) => {
-  stepsEl.innerHTML += `
-    <li>
-      <span class="num">${index + 1}</span>
-      <span>${step}</span>
-    </li>
+  const stepsEl = document.getElementById("steps");
+  stepsEl.innerHTML = "";
+
+  mission.steps.forEach((step, index) => {
+    stepsEl.innerHTML += `
+      <li>
+        <span class="num">${index + 1}</span>
+        <span>${step}</span>
+      </li>
+    `;
+  });
+
+  initMission();
+  initTimer();
+  updateHintMini();
+  updateMissionTimer();
+  updateGlobalTimer();
+
+  setInterval(updateMissionTimer, 1000);
+  setInterval(updateGlobalTimer, 1000);
+}
+
+function showWaitScreen() {
+  document.querySelector(".page").innerHTML = `
+    <section class="hero">
+      <div class="emoji">🎉🦜</div>
+      <h1>4번 미션 성공!</h1>
+      <p class="subtitle">
+        피식이의 암호를 풀었어요.<br />
+        탐정들도 잠시 쉬어가야 합니다.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">⏳ 휴식 시간 안내</div>
+      <p>
+        전체 진행시간이 <strong>20분</strong>이 지나면<br />
+        다음 미션이 자동으로 열립니다.
+      </p>
+      <div class="mission-box" style="margin-top:14px; text-align:center;">
+        남은 시간<br />
+        <strong id="waitTime" style="font-size:32px;">00:00</strong>
+      </div>
+    </section>
   `;
-});
 
-initMission();
-initTimer();
-updateHintMini();
-updateMissionTimer();
-updateGlobalTimer();
+  document.querySelector(".bottom-actions").style.display = "none";
 
-setInterval(updateMissionTimer, 1000);
-setInterval(updateGlobalTimer, 1000);
+  const waitInterval = setInterval(() => {
+    const game = getGame();
+    const elapsed = Date.now() - game.startedAt;
+    const required = REQUIRED_GLOBAL_MINUTES * 60 * 1000;
+    const remaining = required - elapsed;
+
+    updateGlobalTimer();
+
+    if (remaining <= 0) {
+      clearInterval(waitInterval);
+      location.reload();
+      return;
+    }
+
+    const min = Math.floor(remaining / 60000);
+    const sec = Math.floor((remaining % 60000) / 1000);
+
+    document.getElementById("waitTime").textContent =
+      String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+  }, 1000);
+}
+
+function shouldWaitBeforeMission() {
+  if (mission.id !== REQUIRED_WAIT_MISSION_ID) return false;
+
+  const game = getGame();
+  if (!game.startedAt) return false;
+
+  const elapsed = Date.now() - game.startedAt;
+  return elapsed < REQUIRED_GLOBAL_MINUTES * 60 * 1000;
+}
+
+if (shouldWaitBeforeMission()) {
+  markPreviousMissionSuccess(mission.id, getGame());
+  showWaitScreen();
+} else {
+  showMissionContent();
+}
 </script>
 
 </body>
