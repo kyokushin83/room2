@@ -92,14 +92,14 @@ function initTimer() {
   const mission = getMission();
   const key = timerKey(mission.id);
 
-  let endTime = localStorage.getItem(key);
+  let endTime = Number(localStorage.getItem(key));
 
-  if (!endTime) {
+  if (!endTime || isNaN(endTime) || endTime < Date.now()) {
     endTime = Date.now() + mission.timeLimit * 60 * 1000;
-    localStorage.setItem(key, endTime);
+    localStorage.setItem(key, String(endTime));
   }
 
-  return Number(endTime);
+  return endTime;
 }
 
 function formatClock(ms) {
