@@ -24,7 +24,12 @@ function createInitialGame() {
     startedAt: null,
     totalHintLimit: TOTAL_HINT_LIMIT,
     usedHints: 0,
-    missions: {}
+
+    missions: {},
+
+    rewards: {},
+
+    items: {}
   };
 }
 
@@ -45,9 +50,27 @@ function saveGame(game) {
 
 function ensureGameBase(game) {
   if (!game.startedAt) game.startedAt = Date.now();
-  if (!game.totalHintLimit) game.totalHintLimit = TOTAL_HINT_LIMIT;
-  if (typeof game.usedHints !== "number") game.usedHints = 0;
-  if (!game.missions) game.missions = {};
+
+  if (!game.totalHintLimit) {
+    game.totalHintLimit = TOTAL_HINT_LIMIT;
+  }
+
+  if (typeof game.usedHints !== "number") {
+    game.usedHints = 0;
+  }
+
+  if (!game.missions) {
+    game.missions = {};
+  }
+
+  if (!game.rewards) {
+    game.rewards = {};
+  }
+
+  if (!game.items) {
+    game.items = {};
+  }
+
   return game;
 }
 
