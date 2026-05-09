@@ -1,4 +1,3 @@
-```js
 const MISSIONS = {
   1: {
     id: 1,
@@ -132,4 +131,3 @@ const MISSIONS = {
     answer: "고양이들이 쉬고 있는 높은 장소 아래 근처에 다음 QR코드가 있습니다."
   }
 };
-```
