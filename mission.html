@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,7 +6,7 @@
   <title>펫 미션</title>
 
   <script src="missions.js"></script>
-<script src="game.js"></script>
+  <script src="game.js"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,17 +33,6 @@
       background: linear-gradient(180deg, #fff7e8 0%, #ffffff 45%, #f6f3ff 100%);
       padding: 20px 18px 130px;
       box-shadow: 0 0 40px rgba(0,0,0,0.12);
-    }
-
-    .badge {
-      display: inline-flex;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: #ff8f3d;
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: 0 8px 18px rgba(255, 143, 61, 0.28);
     }
 
     .timer {
@@ -214,10 +202,26 @@
       z-index: 20;
     }
 
+    .item-tab {
+      position: fixed;
+      right: 0;
+      top: 52%;
+      transform: translateY(-50%);
+      background: #ff8f3d;
+      color: white;
+      padding: 12px 8px;
+      border-radius: 14px 0 0 14px;
+      font-size: 13px;
+      font-weight: 900;
+      writing-mode: vertical-rl;
+      cursor: pointer;
+      z-index: 20;
+    }
+
     .hint-mini {
       position: fixed;
       right: 0;
-      top: 62%;
+      top: 66%;
       transform: translateY(-50%);
       background: #6e5cff;
       color: white;
@@ -229,16 +233,18 @@
       z-index: 20;
     }
 
-    .panel-bg {
+    .panel-bg,
+    .item-panel-bg {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.45);
-      z-index: 30;
+      z-index: 40;
       justify-content: flex-end;
     }
 
-    .panel {
+    .panel,
+    .item-panel {
       width: 86%;
       max-width: 360px;
       height: 100%;
@@ -268,106 +274,106 @@
     }
 
     .roulette-bg {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-.roulette-box {
-  width: 100%;
-  max-width: 360px;
-  background: white;
-  border-radius: 28px;
-  padding: 24px 20px;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-}
+    .roulette-box {
+      width: 100%;
+      max-width: 360px;
+      background: white;
+      border-radius: 28px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
 
-.roulette-title {
-  font-size: 24px;
-  font-weight: 900;
-  margin-bottom: 12px;
-}
+    .roulette-title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
 
-.roulette-wheel {
-  width: 190px;
-  height: 190px;
-  margin: 18px auto;
-  border-radius: 50%;
-  background:
-    conic-gradient(
-      #ff8f3d 0deg 60deg,
-      #6e5cff 60deg 120deg,
-      #ffce3d 120deg 180deg,
-      #43c96f 180deg 240deg,
-      #ff5c8a 240deg 300deg,
-      #4bb7ff 300deg 360deg
-    );
-  border: 8px solid #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 2.6s cubic-bezier(.18,.89,.32,1.28);
-}
+    .roulette-wheel {
+      width: 190px;
+      height: 190px;
+      margin: 18px auto;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          #ff8f3d 0deg 60deg,
+          #6e5cff 60deg 120deg,
+          #ffce3d 120deg 180deg,
+          #43c96f 180deg 240deg,
+          #ff5c8a 240deg 300deg,
+          #4bb7ff 300deg 360deg
+        );
+      border: 8px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 2.6s cubic-bezier(.18,.89,.32,1.28);
+    }
 
-.roulette-center {
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  background: white;
-  border: 5px solid #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 38px;
-}
+    .roulette-center {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: white;
+      border: 5px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+    }
 
-.roulette-pointer {
-  font-size: 34px;
-  line-height: 1;
-  margin-bottom: -10px;
-}
+    .roulette-pointer {
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: -10px;
+    }
 
-.roulette-result {
-  display: none;
-  background: #fff4df;
-  border: 2px dashed #ffb25f;
-  border-radius: 18px;
-  padding: 16px;
-  margin-top: 14px;
-  font-size: 18px;
-  font-weight: 900;
-}
+    .roulette-result {
+      display: none;
+      background: #fff4df;
+      border: 2px dashed #ffb25f;
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 14px;
+      font-size: 18px;
+      font-weight: 900;
+    }
 
-.roulette-btn {
-  display: none;
-  width: 100%;
-  margin-top: 16px;
-  background: #222;
-  color: white;
-}
+    .roulette-btn {
+      display: none;
+      width: 100%;
+      margin-top: 16px;
+      background: #222;
+      color: white;
+    }
+
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.04); }
       100% { transform: scale(1); }
     }
-
-
-    
   </style>
 </head>
 
 <body>
 
 <div class="side-tab" onclick="openPanel()">기록</div>
-  <div class="item-tab" onclick="openItemPanel()">
+
+<div class="item-tab" onclick="openItemPanel()">
   쿠폰함
 </div>
+
 <div id="hintMini" class="hint-mini">힌트 2/2</div>
 
 <div id="panelBg" class="panel-bg" onclick="closePanel()">
@@ -378,45 +384,14 @@
   </div>
 </div>
 
-<!-- ↓↓↓ 여기부터 새로 추가 ↓↓↓ -->
-
-<div id="itemPanelBg"
-     class="item-panel-bg"
-     onclick="closeItemPanel()">
-
-  <div class="item-panel"
-       onclick="event.stopPropagation()">
-
+<div id="itemPanelBg" class="item-panel-bg" onclick="closeItemPanel()">
+  <div class="item-panel" onclick="event.stopPropagation()">
     <h2>🎁 쿠폰함</h2>
-
     <div id="itemContent"></div>
-
-    <button class="close-btn"
-            onclick="closeItemPanel()">
-      닫기
-    </button>
-
+    <button class="close-btn" onclick="closeItemPanel()">닫기</button>
   </div>
 </div>
-<div id="itemPanelBg"
-     class="item-panel-bg"
-     onclick="closeItemPanel()">
 
-  <div class="item-panel"
-       onclick="event.stopPropagation()">
-
-    <h2>🎁 쿠폰함</h2>
-
-    <div id="itemContent"></div>
-
-    <button class="close-btn"
-            onclick="closeItemPanel()">
-      닫기
-    </button>
-
-  </div>
-</div>
-  
 <div class="device-bg">
   <main class="page">
 
@@ -485,6 +460,7 @@
 
   </main>
 </div>
+
 <div id="rouletteBg" class="roulette-bg">
   <div class="roulette-box">
     <div class="roulette-title">🎰 미션 성공 보상!</div>
@@ -495,9 +471,7 @@
       <div class="roulette-center">🎁</div>
     </div>
 
-    <p id="rouletteStatus">
-      룰렛이 돌아가는 중...
-    </p>
+    <p id="rouletteStatus">룰렛이 돌아가는 중...</p>
 
     <div id="rouletteResult" class="roulette-result"></div>
 
@@ -510,6 +484,7 @@
     </button>
   </div>
 </div>
+
 <div class="bottom-actions">
   <button class="hint-btn" onclick="useHint()">힌트 보기 🔍</button>
   <button class="answer-btn" onclick="confirmAnswer()">정답 보기 👀</button>
@@ -529,41 +504,43 @@ function showMissionContent() {
   document.getElementById("subtitle").innerHTML = mission.subtitle;
   document.getElementById("story").innerHTML = mission.story;
   document.getElementById("mission").innerHTML = mission.mission;
+
   if (mission.quizType === "bookRotation") {
-  const questions = mission.bookQuestions;
-  const rotationMinutes = 20;
-  const seed = Math.floor(Date.now() / (1000 * 60 * rotationMinutes));
-  const selected = questions[seed % questions.length];
+    const questions = mission.bookQuestions;
+    const rotationMinutes = 20;
+    const seed = Math.floor(Date.now() / (1000 * 60 * rotationMinutes));
+    const selected = questions[seed % questions.length];
 
-  document.getElementById("mission").innerHTML += `
-    <div style="margin-top:16px; padding:16px; border-radius:16px; background:white;">
-      <strong>📘 오늘의 책</strong><br />
-      ${selected.book}<br /><br />
+    document.getElementById("mission").innerHTML += `
+      <div style="margin-top:16px; padding:16px; border-radius:16px; background:white;">
+        <strong>📘 오늘의 책</strong><br />
+        ${selected.book}<br /><br />
 
-      <strong>📄 찾아볼 페이지</strong><br />
-      ${selected.page}페이지<br /><br />
+        <strong>📄 찾아볼 페이지</strong><br />
+        ${selected.page}페이지<br /><br />
 
-      <strong>❓ 문제</strong><br />
-      ${selected.question}<br /><br />
+        <strong>❓ 문제</strong><br />
+        ${selected.question}<br /><br />
 
-      <input
-        id="bookQuizAnswer"
-        type="text"
-        placeholder="정답 입력"
-        style="width:100%; padding:14px; border-radius:14px; border:1px solid #ccc; font-size:16px;"
-      />
+        <input
+          id="bookQuizAnswer"
+          type="text"
+          placeholder="정답 입력"
+          style="width:100%; padding:14px; border-radius:14px; border:1px solid #ccc; font-size:16px;"
+        />
 
-      <button
-        onclick="checkBookQuizAnswer()"
-        style="width:100%; margin-top:12px; background:#222; color:white;"
-      >
-        정답 확인하기
-      </button>
-    </div>
-  `;
+        <button
+          onclick="checkBookQuizAnswer()"
+          style="width:100%; margin-top:12px; background:#222; color:white;"
+        >
+          정답 확인하기
+        </button>
+      </div>
+    `;
 
-  window.currentBookAnswer = selected.answer;
-}
+    window.currentBookAnswer = selected.answer;
+  }
+
   document.getElementById("timeLimit").innerHTML = mission.timeLimit + "분";
   document.getElementById("difficulty").innerHTML = mission.difficulty;
   document.getElementById("location").innerHTML = mission.location;
@@ -582,20 +559,19 @@ function showMissionContent() {
     `;
   });
 
- initMission();
+  initMission();
   initTimer();
   updateHintMini();
   updateMissionTimer();
   updateGlobalTimer();
 
-  // 🎰 이전 미션 성공 보상 룰렛
-if (shouldShowRewardForPreviousMission(mission.id)) {
-  const reward = drawRewardCoupon();
+  if (shouldShowRewardForPreviousMission(mission.id)) {
+    const reward = drawRewardCoupon();
 
-  setTimeout(() => {
-    showRewardRoulette(reward);
-  }, 500);
-}
+    setTimeout(() => {
+      showRewardRoulette(reward);
+    }, 500);
+  }
 
   setInterval(updateMissionTimer, 1000);
   setInterval(updateGlobalTimer, 1000);
@@ -665,6 +641,7 @@ if (shouldWaitBeforeMission()) {
 } else {
   showMissionContent();
 }
+
 function normalizeAnswer(value) {
   return String(value)
     .trim()
@@ -685,7 +662,8 @@ function checkBookQuizAnswer() {
   } else {
     alert("아직 정답이 아닙니다. 책 속 내용을 다시 확인해보세요.");
   }
-}  
+}
+
 function showRewardRoulette(reward) {
   const bg = document.getElementById("rouletteBg");
   const wheel = document.getElementById("rouletteWheel");
@@ -705,7 +683,6 @@ function showRewardRoulette(reward) {
 
   setTimeout(() => {
     wheel.style.transition = "transform 2.6s cubic-bezier(.18,.89,.32,1.28)";
-
     const extraSpin = 360 * 6;
     const randomStop = Math.floor(Math.random() * 360);
     wheel.style.transform = `rotate(${extraSpin + randomStop}deg)`;
@@ -736,10 +713,9 @@ function closeRewardRoulette() {
   const bg = document.getElementById("rouletteBg");
   if (bg) bg.style.display = "none";
 }
-function renderItems() {
-  const itemContent =
-    document.getElementById("itemContent");
 
+function renderItems() {
+  const itemContent = document.getElementById("itemContent");
   if (!itemContent) return;
 
   const game = getGame();
@@ -753,11 +729,7 @@ function renderItems() {
     if (count > 0) {
       html += `
         <div class="record-box">
-          <b>
-            ${item.emoji}
-            ${item.name}
-          </b><br />
-
+          <b>${item.emoji} ${item.name}</b><br />
           보유 수량: ${count}개
         </div>
       `;
@@ -778,18 +750,12 @@ function renderItems() {
 
 function openItemPanel() {
   renderItems();
-
-  document.getElementById(
-    "itemPanelBg"
-  ).style.display = "flex";
+  document.getElementById("itemPanelBg").style.display = "flex";
 }
 
 function closeItemPanel() {
-  document.getElementById(
-    "itemPanelBg"
-  ).style.display = "none";
+  document.getElementById("itemPanelBg").style.display = "none";
 }
-  
 </script>
 
 </body>
