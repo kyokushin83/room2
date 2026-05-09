@@ -1,4 +1,4 @@
-<script>
+
 const MISSIONS = {
   1: {
     id: 1,
@@ -66,4 +66,3 @@ const MISSIONS = {
     answer: "앵무새가 말한 색깔 순서의 마지막 표식 근처에 다음 미션 QR코드가 있습니다."
   }
 };
-</script>
