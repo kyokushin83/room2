@@ -267,11 +267,98 @@
       margin-top: 12px;
     }
 
+    .roulette-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.roulette-box {
+  width: 100%;
+  max-width: 360px;
+  background: white;
+  border-radius: 28px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.roulette-title {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.roulette-wheel {
+  width: 190px;
+  height: 190px;
+  margin: 18px auto;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      #ff8f3d 0deg 60deg,
+      #6e5cff 60deg 120deg,
+      #ffce3d 120deg 180deg,
+      #43c96f 180deg 240deg,
+      #ff5c8a 240deg 300deg,
+      #4bb7ff 300deg 360deg
+    );
+  border: 8px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 2.6s cubic-bezier(.18,.89,.32,1.28);
+}
+
+.roulette-center {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: white;
+  border: 5px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+}
+
+.roulette-pointer {
+  font-size: 34px;
+  line-height: 1;
+  margin-bottom: -10px;
+}
+
+.roulette-result {
+  display: none;
+  background: #fff4df;
+  border: 2px dashed #ffb25f;
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 14px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.roulette-btn {
+  display: none;
+  width: 100%;
+  margin-top: 16px;
+  background: #222;
+  color: white;
+}
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.04); }
       100% { transform: scale(1); }
     }
+
+
+    
   </style>
 </head>
 
@@ -356,7 +443,31 @@
 
   </main>
 </div>
+<div id="rouletteBg" class="roulette-bg">
+  <div class="roulette-box">
+    <div class="roulette-title">🎰 미션 성공 보상!</div>
 
+    <div class="roulette-pointer">▼</div>
+
+    <div id="rouletteWheel" class="roulette-wheel">
+      <div class="roulette-center">🎁</div>
+    </div>
+
+    <p id="rouletteStatus">
+      룰렛이 돌아가는 중...
+    </p>
+
+    <div id="rouletteResult" class="roulette-result"></div>
+
+    <button
+      id="rouletteCloseBtn"
+      class="roulette-btn"
+      onclick="closeRewardRoulette()"
+    >
+      확인하고 미션 계속하기
+    </button>
+  </div>
+</div>
 <div class="bottom-actions">
   <button class="hint-btn" onclick="useHint()">힌트 보기 🔍</button>
   <button class="answer-btn" onclick="confirmAnswer()">정답 보기 👀</button>
@@ -436,16 +547,13 @@ function showMissionContent() {
   updateGlobalTimer();
 
   // 🎰 이전 미션 성공 보상 룰렛
-  if (shouldShowRewardForPreviousMission(mission.id)) {
-    const reward = drawRewardCoupon();
+if (shouldShowRewardForPreviousMission(mission.id)) {
+  const reward = drawRewardCoupon();
 
-    setTimeout(() => {
-      alert(
-        "🎰 미션 성공 보상 룰렛!\n\n" +
-        reward.message
-      );
-    }, 500);
-  }
+  setTimeout(() => {
+    showRewardRoulette(reward);
+  }, 500);
+}
 
   setInterval(updateMissionTimer, 1000);
   setInterval(updateGlobalTimer, 1000);
@@ -536,6 +644,57 @@ function checkBookQuizAnswer() {
     alert("아직 정답이 아닙니다. 책 속 내용을 다시 확인해보세요.");
   }
 }  
+function showRewardRoulette(reward) {
+  const bg = document.getElementById("rouletteBg");
+  const wheel = document.getElementById("rouletteWheel");
+  const status = document.getElementById("rouletteStatus");
+  const result = document.getElementById("rouletteResult");
+  const closeBtn = document.getElementById("rouletteCloseBtn");
+
+  if (!bg || !wheel || !status || !result || !closeBtn) return;
+
+  bg.style.display = "flex";
+  result.style.display = "none";
+  closeBtn.style.display = "none";
+  status.textContent = "룰렛이 돌아가는 중...";
+
+  wheel.style.transition = "none";
+  wheel.style.transform = "rotate(0deg)";
+
+  setTimeout(() => {
+    wheel.style.transition = "transform 2.6s cubic-bezier(.18,.89,.32,1.28)";
+
+    const extraSpin = 360 * 6;
+    const randomStop = Math.floor(Math.random() * 360);
+    wheel.style.transform = `rotate(${extraSpin + randomStop}deg)`;
+  }, 100);
+
+  setTimeout(() => {
+    status.textContent = "결과가 나왔습니다!";
+
+    if (reward.type === "coupon") {
+      result.innerHTML = `
+        🎉 축하합니다!<br />
+        ${reward.item.emoji} ${reward.item.name}<br />
+        획득 완료!
+      `;
+    } else {
+      result.innerHTML = `
+        😭 아쉽습니다!<br />
+        이번 룰렛은 꽝입니다.
+      `;
+    }
+
+    result.style.display = "block";
+    closeBtn.style.display = "block";
+  }, 3000);
+}
+
+function closeRewardRoulette() {
+  const bg = document.getElementById("rouletteBg");
+  if (bg) bg.style.display = "none";
+}
+  
 </script>
 
 </body>
