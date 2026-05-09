@@ -376,6 +376,41 @@ function showMissionContent() {
   document.getElementById("subtitle").innerHTML = mission.subtitle;
   document.getElementById("story").innerHTML = mission.story;
   document.getElementById("mission").innerHTML = mission.mission;
+  if (mission.quizType === "bookRotation") {
+  const questions = mission.bookQuestions;
+  const rotationMinutes = 20;
+  const seed = Math.floor(Date.now() / (1000 * 60 * rotationMinutes));
+  const selected = questions[seed % questions.length];
+
+  document.getElementById("mission").innerHTML += `
+    <div style="margin-top:16px; padding:16px; border-radius:16px; background:white;">
+      <strong>📘 오늘의 책</strong><br />
+      ${selected.book}<br /><br />
+
+      <strong>📄 찾아볼 페이지</strong><br />
+      ${selected.page}페이지<br /><br />
+
+      <strong>❓ 문제</strong><br />
+      ${selected.question}<br /><br />
+
+      <input
+        id="bookQuizAnswer"
+        type="text"
+        placeholder="정답 입력"
+        style="width:100%; padding:14px; border-radius:14px; border:1px solid #ccc; font-size:16px;"
+      />
+
+      <button
+        onclick="checkBookQuizAnswer()"
+        style="width:100%; margin-top:12px; background:#222; color:white;"
+      >
+        정답 확인하기
+      </button>
+    </div>
+  `;
+
+  window.currentBookAnswer = selected.answer;
+}
   document.getElementById("timeLimit").innerHTML = mission.timeLimit + "분";
   document.getElementById("difficulty").innerHTML = mission.difficulty;
   document.getElementById("location").innerHTML = mission.location;
@@ -468,6 +503,27 @@ if (shouldWaitBeforeMission()) {
 } else {
   showMissionContent();
 }
+function normalizeAnswer(value) {
+  return String(value)
+    .trim()
+    .replace(/\s/g, "")
+    .toLowerCase();
+}
+
+function checkBookQuizAnswer() {
+  const input = document.getElementById("bookQuizAnswer");
+  if (!input) return;
+
+  const userAnswer = normalizeAnswer(input.value);
+  const correctAnswer = normalizeAnswer(window.currentBookAnswer);
+
+  if (userAnswer === correctAnswer) {
+    alert("정답입니다! 다음 미션으로 이동합니다.");
+    location.href = `mission.html?id=7&v=${Date.now()}`;
+  } else {
+    alert("아직 정답이 아닙니다. 책 속 내용을 다시 확인해보세요.");
+  }
+}  
 </script>
 
 </body>
