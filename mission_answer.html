@@ -207,11 +207,11 @@ function goNextMission() {
   const nextId = mission.id + 1;
 
   if (!MISSIONS[nextId]) {
-    alert("마지막 미션입니다.");
+    alert("다음 미션 데이터가 없습니다. missions.js에 " + nextId + "번 미션이 있는지 확인하세요.");
     return;
   }
 
-  location.href = `mission.html?id=${nextId}`;
+  location.href = `mission.html?id=${nextId}&v=${Date.now()}`;
 }
 </script>
 
