@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>미션 12 · 댕댕이의 결정적 힌트</title>
+
+  <script src="missions.js"></script>
+  <script src="game.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: #efe9dd;
+      color: #222;
+      min-height: 100vh;
+    }
+    .wrap { min-height: 100vh; display: flex; justify-content: center; align-items: stretch; }
+    .page {
+      width: 100%; max-width: 480px; min-height: 100vh;
+      padding: 22px 18px 32px;
+      background: linear-gradient(180deg, #fff7e8 0%, #ffffff 55%, #f6f3ff 100%);
+      box-shadow: 0 0 40px rgba(0,0,0,0.12);
+    }
+    .hero, .card {
+      background: white; border-radius: 24px; padding: 22px 20px;
+      box-shadow: 0 14px 34px rgba(77, 55, 25, 0.12);
+      border: 1px solid rgba(255, 143, 61, 0.16); margin-bottom: 14px;
+    }
+    .emoji { font-size: 48px; margin-bottom: 8px; }
+    h1 { font-size: 28px; line-height: 1.25; margin-bottom: 12px; }
+    .subtitle { font-size: 16px; color: #5b5147; }
+    .mission-box {
+      background: #fff4df; border: 2px dashed #ffb25f; border-radius: 18px;
+      padding: 16px; margin-top: 14px;
+    }
+    input { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid #ccc; font-size: 20px; text-align: center; }
+    button { width: 100%; margin-top: 12px; padding: 14px; border-radius: 14px; border: none; background: #222; color: white; font-size: 16px; font-weight: 900; cursor: pointer; }
+    .result-msg { margin-top: 12px; font-size: 16px; font-weight: 900; }
+    .image-placeholder { height: 180px; border: 2px dashed #ccc; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #777; margin-top: 14px; text-align: center; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <main class="page">
+    <section class="hero">
+      <div class="emoji">🏥🐶</div>
+      <h1>댕댕이의 결정적 힌트를 찾아라!</h1>
+      <p class="subtitle">강아지의 마이크로칩을 리더기로 확인하세요.</p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">📖 스토리</div>
+      <p>동물병원 3진료실에 들어가자 수의사 선생님이 댕댕이의 피부 아래에 마이크로칩이 심어져 있다고 설명합니다.
+      탐정들은 강아지 인형을 사용해 칩 번호를 확인하고, 아이의 정보를 알아내야 합니다.
+      이번 단계에서 모든 준비를 마치고 마지막 단서를 확보하세요.</p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">🧩 미션 내용</div>
+      <div class="mission-box">
+        동물병원 3진료실 안에 있는 강아지 인형의 목쪽 피부에 리더기를 대세요.<br/>
+        리더기에 번호가 나타나면 마지막 2자리 숫자를 아래 입력창에 입력하면 미션 성공입니다.
+        <div class="image-placeholder">강아지 인형 / 리더기 이미지 자리</div>
+        <input type="text" id="microchipAnswer" maxlength="2" placeholder="마지막 2자리 입력" inputmode="numeric"/>
+        <button onclick="checkMicrochipAnswer()">정답 확인하기</button>
+        <div id="microchipMessage" class="result-msg"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const mission = {
+  microchipAnswer: "36",
+  microchipPrefix: "4101001234",
+  nextMissionId: 13
+};
+
+function normalize(value) { return String(value).trim().replace(/\D/g,"").slice(0,2); }
+
+function checkMicrochipAnswer(){
+  const input = document.getElementById("microchipAnswer");
+  const msg = document.getElementById("microchipMessage");
+  const value = normalize(input.value);
+  input.value = value;
+  if(value.length < 2){ msg.textContent="마지막 2자리를 입력해주세요."; msg.style.color="#d64545"; return; }
+  if(value !== mission.microchipAnswer){ msg.textContent="번호가 틀렸습니다. 다시 확인하세요."; msg.style.color="#d64545"; return; }
+  msg.textContent="정답입니다! 다음 미션으로 이동합니다."; msg.style.color="#16823a";
+  setTimeout(()=>{ location.href=`mission.html?id=${mission.nextMissionId}`; }, 900);
+}
+</script>
+</body>
+</html>
