@@ -429,11 +429,23 @@ function showMissionContent() {
     `;
   });
 
-  initMission();
+ initMission();
   initTimer();
   updateHintMini();
   updateMissionTimer();
   updateGlobalTimer();
+
+  // 🎰 이전 미션 성공 보상 룰렛
+  if (shouldShowRewardForPreviousMission(mission.id)) {
+    const reward = drawRewardCoupon();
+
+    setTimeout(() => {
+      alert(
+        "🎰 미션 성공 보상 룰렛!\n\n" +
+        reward.message
+      );
+    }, 500);
+  }
 
   setInterval(updateMissionTimer, 1000);
   setInterval(updateGlobalTimer, 1000);
