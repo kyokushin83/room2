@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>미션 힌트</title>
+
+  <script src="missions.js"></script>
+  <script src="game.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: #efe9dd;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      padding: 22px 18px 32px;
+      background: linear-gradient(180deg, #f7f4ff 0%, #ffffff 55%, #fff8ec 100%);
+      box-shadow: 0 0 40px rgba(0,0,0,0.12);
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #6e5cff;
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 26px;
+      padding: 24px 20px;
+      box-shadow: 0 14px 34px rgba(50, 40, 80, 0.1);
+      margin-bottom: 14px;
+    }
+
+    .emoji {
+      font-size: 52px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.25;
+      letter-spacing: -0.04em;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.65;
+      color: #333;
+    }
+
+    .hint-box {
+      background: #f1efff;
+      border: 2px dashed #8b7cff;
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 14px;
+      font-size: 17px;
+      font-weight: 800;
+      color: #352899;
+    }
+
+    .image-box {
+      width: 100%;
+      min-height: 180px;
+      border-radius: 20px;
+      background: #eeeeee;
+      border: 2px dashed #cccccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      font-size: 14px;
+      text-align: center;
+      padding: 20px;
+      margin-top: 14px;
+    }
+
+    .guide {
+      background: #fff4df;
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .guide strong {
+      color: #d45d00;
+    }
+
+    .bottom {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .back-btn {
+      background: #222;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrap">
+  <main class="page">
+
+    <div id="badge" class="badge"></div>
+
+    <section class="card">
+
+      <div id="emoji" class="emoji"></div>
+
+      <h1 id="title"></h1>
+
+      <p id="hintText"></p>
+
+      <div id="hintList"></div>
+
+      <div class="image-box">
+        여기에 힌트 이미지 넣기<br /><br />
+        예: hint1.jpg
+      </div>
+
+      <div class="guide">
+        <strong>이미지 넣는 방법</strong><br /><br />
+
+        위 회색 박스를 아래 코드로 교체하세요.<br /><br />
+
+        &lt;img src="hint1.jpg" style="width:100%; border-radius:20px;"&gt;
+      </div>
+
+    </section>
+
+    <div class="bottom">
+      <button class="back-btn" onclick="goMission()">미션으로 돌아가기</button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const mission = getMission();
+
+document.title = `${mission.id}번 미션 힌트`;
+
+document.getElementById("badge").innerHTML =
+  `MISSION ${String(mission.id).padStart(2, "0")} · HINT`;
+
+document.getElementById("emoji").innerHTML = mission.hintEmoji;
+document.getElementById("title").innerHTML = mission.hintTitle;
+document.getElementById("hintText").innerHTML = mission.hintText;
+
+const hintList = document.getElementById("hintList");
+
+mission.hints.forEach((hint) => {
+  hintList.innerHTML += `
+    <div class="hint-box">${hint}</div>
+  `;
+});
+
+function goMission() {
+  location.href = `mission.html?id=${mission.id}`;
+}
+</script>
+
+</body>
+</html>
