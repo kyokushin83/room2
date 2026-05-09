@@ -410,3 +410,75 @@ function startGame() {
 
   location.href = "mission.html?id=1";
 }
+const COUPON_ITEMS = [
+  { id: "catCafe", emoji: "🐱", name: "고양이카페 30% 할인쿠폰" },
+  { id: "cotonCafe", emoji: "🐶", name: "꼬똥카페 30% 할인쿠폰" },
+  { id: "animalCafe", emoji: "🦜", name: "애니멀카페 30% 할인쿠폰" },
+  { id: "rcCafe", emoji: "🏎", name: "RC카카페 30% 할인쿠폰" },
+  { id: "vetExperience", emoji: "🩺", name: "수의사체험 30% 할인쿠폰" },
+  { id: "clawMachine", emoji: "🧸", name: "인형뽑기카페 30% 할인쿠폰" }
+];
+
+function drawRewardCoupon() {
+  let game = getGame();
+  game = ensureGameBase(game);
+
+  if (!game.items) {
+    game.items = {};
+  }
+
+  const availableCoupons = COUPON_ITEMS.filter((item) => {
+    return !game.items[item.id];
+  });
+
+  const isLose = Math.random() < 0.5;
+
+  if (isLose || availableCoupons.length === 0) {
+    return {
+      type: "lose",
+      message: "아쉽게도 이번 룰렛은 꽝입니다!"
+    };
+  }
+
+  const selected =
+    availableCoupons[
+      Math.floor(Math.random() * availableCoupons.length)
+    ];
+
+  game.items[selected.id] = 1;
+
+  saveGame(game);
+
+  return {
+    type: "coupon",
+    item: selected,
+    message: `${selected.emoji} ${selected.name} 획득!`
+  };
+}
+
+function shouldShowRewardForPreviousMission(currentMissionId) {
+  if (currentMissionId <= 1) {
+    return false;
+  }
+
+  const prevMissionId = currentMissionId - 1;
+
+  let game = getGame();
+  game = ensureGameBase(game);
+
+  if (!game.rewards) {
+    game.rewards = {};
+  }
+
+  const rewardKey = `mission${prevMissionId}`;
+
+  if (game.rewards[rewardKey]) {
+    return false;
+  }
+
+  game.rewards[rewardKey] = true;
+
+  saveGame(game);
+
+  return true;
+}
