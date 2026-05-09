@@ -115,7 +115,7 @@ const MISSIONS = {
       "QR코드를 스캔하면 다음 미션으로 이동합니다."
     ],
     timeLimit: 6,
-    difficulty: "⭐⭐☆☆☆",
+    difficulty: "⭐⭐⭐☆☆",
     location: "고양이카페 앞 통로",
     successCondition: "숨겨진 QR코드 발견",
     safety: "통유리를 두드리거나 큰 소리를 내지 말아주세요. 고양이들이 놀랄 수 있습니다.",
