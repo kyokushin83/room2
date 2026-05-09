@@ -1371,11 +1371,11 @@ function renderDogIdCard(chipLast2) {
       </div>
 
       <button
-        onclick="downloadDogIdCard()"
-        style="width:100%; margin-top:18px; background:#222; color:white;"
-      >
-        주민등록증 저장하기
-      </button>
+  onclick="location.href=`mission.html?id=${mission.nextMissionId || mission.id + 1}`"
+  style="width:100%; margin-top:18px; background:#222; color:white;"
+>
+  미션 완료하기
+</button>
 
       <div style="margin-top:10px; font-size:13px; color:#666; line-height:1.5;">
         휴대폰에서 저장이 안 될 경우, 화면 캡처로 보관하세요.
