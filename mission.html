@@ -1,0 +1,415 @@
+좋아 형.
+다음은 핵심인 `mission.html`이야.
+이 파일 하나로 mission1~8 전부 돌릴 수 있음.
+
+파일명:
+
+```text
+mission.html
+```
+
+복붙:
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>펫 미션</title>
+
+  <script src="missions.js"></script>
+  <script src="game.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", Arial, sans-serif;
+      background: #efe9dd;
+      color: #222;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .device-bg {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff7e8 0%, #ffffff 45%, #f6f3ff 100%);
+      padding: 20px 18px 130px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.12);
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ff8f3d;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 8px 18px rgba(255, 143, 61, 0.28);
+    }
+
+    .timer {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 50;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: #222;
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      min-width: 110px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    .timer.warning {
+      background: #e63946;
+      animation: pulse 1s infinite;
+    }
+
+    .hero, .card {
+      background: white;
+      border-radius: 24px;
+      padding: 22px 20px;
+      box-shadow: 0 14px 34px rgba(77, 55, 25, 0.12);
+      border: 1px solid rgba(255, 143, 61, 0.16);
+      margin-bottom: 14px;
+    }
+
+    .emoji {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.25;
+      letter-spacing: -0.04em;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #5b5147;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .mission-box {
+      background: #fff4df;
+      border: 2px dashed #ffb25f;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .steps {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .steps li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #f8f7ff;
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 15px;
+    }
+
+    .num {
+      flex: 0 0 26px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #6e5cff;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .info {
+      background: #f7f7f7;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .info span {
+      display: block;
+      color: #777;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .warning-card {
+      background: #fff0f0;
+      border: 1px solid #ffcaca;
+      color: #7a2525;
+    }
+
+    .bottom-actions {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      padding: 12px 18px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0), #ffffff 30%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      z-index: 15;
+    }
+
+    button {
+      border: none;
+      border-radius: 18px;
+      padding: 16px 12px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    }
+
+    .hint-btn {
+      background: #6e5cff;
+      color: white;
+    }
+
+    .answer-btn {
+      background: #222;
+      color: white;
+    }
+
+    .side-tab {
+      position: fixed;
+      right: 0;
+      top: 42%;
+      transform: translateY(-50%);
+      background: #222;
+      color: white;
+      padding: 12px 8px;
+      border-radius: 14px 0 0 14px;
+      font-size: 13px;
+      font-weight: 900;
+      writing-mode: vertical-rl;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .hint-mini {
+      position: fixed;
+      right: 0;
+      top: 62%;
+      transform: translateY(-50%);
+      background: #6e5cff;
+      color: white;
+      padding: 12px 8px;
+      border-radius: 14px 0 0 14px;
+      font-size: 13px;
+      font-weight: 900;
+      writing-mode: vertical-rl;
+      z-index: 20;
+    }
+
+    .panel-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 30;
+      justify-content: flex-end;
+    }
+
+    .panel {
+      width: 86%;
+      max-width: 360px;
+      height: 100%;
+      background: white;
+      padding: 24px 20px;
+      overflow-y: auto;
+    }
+
+    .record-box {
+      background: #f7f7f7;
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .close-btn {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 14px;
+      background: #222;
+      color: white;
+      font-weight: 900;
+      margin-top: 12px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="side-tab" onclick="openPanel()">기록</div>
+<div id="hintMini" class="hint-mini">힌트 2/2</div>
+
+<div id="panelBg" class="panel-bg" onclick="closePanel()">
+  <div class="panel" onclick="event.stopPropagation()">
+    <h2>📋 미션 기록</h2>
+    <div id="recordContent"></div>
+    <button class="close-btn" onclick="closePanel()">닫기</button>
+  </div>
+</div>
+
+<div class="device-bg">
+  <main class="page">
+
+    <div id="timer" class="timer">
+      <span style="font-size:11px; display:block;">본 미션 남은 시간</span>
+      <span id="missionTimeValue">07:00</span>
+
+      <span style="font-size:11px; display:block; margin-top:6px; opacity:0.7;">
+        전체 진행시간
+      </span>
+
+      <span id="globalTimeValue">00:00</span>
+    </div>
+
+    <section class="hero">
+      <div id="emoji" class="emoji"></div>
+      <h1 id="title"></h1>
+      <p id="subtitle" class="subtitle"></p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">📖 스토리</div>
+      <p id="story"></p>
+    </section>
+
+    <section class="card">
+      <div class="section-title">🧩 미션 내용</div>
+      <div id="mission" class="mission-box"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">🚶 참여 방법</div>
+      <ul id="steps" class="steps"></ul>
+    </section>
+
+    <section class="card">
+      <div class="section-title">✅ 미션 정보</div>
+
+      <div class="info-grid">
+        <div class="info">
+          <span>제한 시간</span>
+          <b id="timeLimit"></b>
+        </div>
+
+        <div class="info">
+          <span>난이도</span>
+          <b id="difficulty"></b>
+        </div>
+
+        <div class="info">
+          <span>진행 장소</span>
+          <b id="location"></b>
+        </div>
+
+        <div class="info">
+          <span>성공 조건</span>
+          <b id="successCondition"></b>
+        </div>
+      </div>
+    </section>
+
+    <section class="card warning-card">
+      <div class="section-title">⚠️ 안전 안내</div>
+      <p id="safety"></p>
+    </section>
+
+  </main>
+</div>
+
+<div class="bottom-actions">
+  <button class="hint-btn" onclick="useHint()">힌트 보기 🔍</button>
+  <button class="answer-btn" onclick="confirmAnswer()">정답 보기 👀</button>
+</div>
+
+<script>
+const mission = getMission();
+
+document.title = mission.title.replace(/<br \/>/g, " ");
+
+document.getElementById("emoji").innerHTML = mission.emoji;
+document.getElementById("title").innerHTML = mission.title;
+document.getElementById("subtitle").innerHTML = mission.subtitle;
+document.getElementById("story").innerHTML = mission.story;
+document.getElementById("mission").innerHTML = mission.mission;
+document.getElementById("timeLimit").innerHTML = mission.timeLimit + "분";
+document.getElementById("difficulty").innerHTML = mission.difficulty;
+document.getElementById("location").innerHTML = mission.location;
+document.getElementById("successCondition").innerHTML = mission.successCondition;
+document.getElementById("safety").innerHTML = mission.safety;
+
+const stepsEl = document.getElementById("steps");
+
+mission.steps.forEach((step, index) => {
+  stepsEl.innerHTML += `
+    <li>
+      <span class="num">${index + 1}</span>
+      <span>${step}</span>
+    </li>
+  `;
+});
+
+initMission();
+updateHintMini();
+updateMissionTimer();
+updateGlobalTimer();
+
+setInterval(updateMissionTimer, 1000);
+setInterval(updateGlobalTimer, 1000);
+</script>
+
+</body>
+</html>
+```
