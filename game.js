@@ -122,6 +122,25 @@ function formatTimeText(ms) {
   return `${minutes}분 ${seconds}초`;
 }
 
+
+function updateGlobalTimer() {
+  const game = getGame();
+
+  const globalTimeValue =
+    document.getElementById("globalTimeValue") ||
+    document.getElementById("timeValue");
+
+  if (!globalTimeValue) return;
+
+  if (!game.startedAt) {
+    globalTimeValue.textContent = "00:00";
+    return;
+  }
+
+  const elapsed = Date.now() - game.startedAt;
+  globalTimeValue.textContent = formatClock(elapsed);
+}
+
 function updateMissionTimer() {
   const mission = getMission();
   const key = missionKey(mission.id);
@@ -130,7 +149,12 @@ function updateMissionTimer() {
 
   if (!timerEl || !missionTimeValue) return;
 
-  const endTime = Number(localStorage.getItem(timerKey(mission.id)));
+  let endTime = Number(localStorage.getItem(timerKey(mission.id)));
+
+  if (!endTime || isNaN(endTime)) {
+    endTime = initTimer();
+  }
+
   const remaining = endTime - Date.now();
 
   if (remaining <= 0) {
@@ -161,25 +185,6 @@ function updateMissionTimer() {
     timerEl.classList.add("warning");
   }
 }
-
-function updateGlobalTimer() {
-  const game = getGame();
-
-  const globalTimeValue =
-    document.getElementById("globalTimeValue") ||
-    document.getElementById("timeValue");
-
-  if (!globalTimeValue) return;
-
-  if (!game.startedAt) {
-    globalTimeValue.textContent = "00:00";
-    return;
-  }
-
-  const elapsed = Date.now() - game.startedAt;
-  globalTimeValue.textContent = formatClock(elapsed);
-}
-
 function updateHintMini() {
   const hintMini = document.getElementById("hintMini");
   if (!hintMini) return;
