@@ -1,4 +1,3 @@
-
 const MISSIONS = {
   1: {
     id: 1,
@@ -33,7 +32,7 @@ const MISSIONS = {
     answer: "마지막 QR코드는 토끼 발자국이 끝나는 지점 근처, 지하상가 통로의 벽면 또는 기둥 주변에 있습니다."
   },
 
-    2: {
+  2: {
     id: 2,
     place: "앵무새카페 앞",
     badge: "MISSION 02 · 앵무새카페 앞",
