@@ -543,6 +543,7 @@ function markRewardClaimedForPreviousMission(currentMissionId) {
 
   saveGame(game);
 }
+
 function checkChipInput() {
   const input = document.getElementById("chipInput");
   if (!input) return;
@@ -551,7 +552,15 @@ function checkChipInput() {
   const mission = getMission();
 
   if (val === mission.answer) {
-    alert("✅ 정답입니다! 다음 미션으로 이동합니다.");
+    // ✅ 정답
+    alert(
+      "🎉 미션 성공!\n" +
+      "축하합니다! 댕댕이를 찾았습니다.\n" +
+      "다행히 꼬똥카페에서 아이들과 즐겁게 놀고 있었어요.\n\n" +
+      "➡️ 결제하신 카운터로 가서 쿠폰을 받아가세요!"
+    );
+
+    // 다음 미션 이동 (없으면 mission 13)
     location.href = `mission.html?id=${mission.nextMissionId || mission.id + 1}`;
   } else {
     alert("❌ 마지막 2자리를 다시 확인하세요.");
