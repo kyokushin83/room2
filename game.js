@@ -552,7 +552,7 @@ function checkChipInput() {
   const mission = getMission();
 
   if (val === mission.answer) {
-    // ✅ 성공 팝업
+    // ✅ 미션 성공 팝업만 띄우고 이동 없음
     alert(
       "🎉 미션 성공!\n" +
       "축하합니다! 댕댕이를 찾았습니다.\n" +
@@ -560,8 +560,7 @@ function checkChipInput() {
       "➡️ 결제하신 카운터로 가서 쿠폰을 받아가세요!"
     );
 
-    // 12번 미션은 종료이므로 페이지 이동 제거
-    // location.href = ... 제거
+    // location.href 제거 → 페이지 이동 없음
 
   } else {
     alert("❌ 마지막 2자리를 다시 확인하세요.");
