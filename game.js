@@ -561,8 +561,7 @@ function checkChipInput() {
       "➡️ 결제하신 카운터로 가서 쿠폰을 받아가세요!"
     );
 
-    // 다음 미션으로 이동 (없으면 mission 13)
-    location.href = `mission.html?id=${mission.nextMissionId || mission.id + 1}`;
+    // 다음 미션으로 이동 (없으면 mission 13
     
   } else {
     // 틀렸을 때
