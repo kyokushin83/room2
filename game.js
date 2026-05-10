@@ -551,8 +551,9 @@ function checkChipInput() {
   const val = String(input.value || "").trim().replace(/\D/g, "");
   const mission = getMission();
 
+  // 정답 확인
   if (val === mission.answer) {
-    // ✅ 정답
+    // ✅ 미션 성공 메시지
     alert(
       "🎉 미션 성공!\n" +
       "축하합니다! 댕댕이를 찾았습니다.\n" +
@@ -560,9 +561,11 @@ function checkChipInput() {
       "➡️ 결제하신 카운터로 가서 쿠폰을 받아가세요!"
     );
 
-    // 다음 미션 이동 (없으면 mission 13)
+    // 다음 미션으로 이동 (없으면 mission 13)
     location.href = `mission.html?id=${mission.nextMissionId || mission.id + 1}`;
+    
   } else {
+    // 틀렸을 때
     alert("❌ 마지막 2자리를 다시 확인하세요.");
   }
 }
