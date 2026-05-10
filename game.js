@@ -543,3 +543,17 @@ function markRewardClaimedForPreviousMission(currentMissionId) {
 
   saveGame(game);
 }
+function checkChipInput() {
+  const input = document.getElementById("chipInput");
+  if (!input) return;
+
+  const val = String(input.value || "").trim().replace(/\D/g, "");
+  const mission = getMission();
+
+  if (val === mission.answer) {
+    alert("✅ 정답입니다! 다음 미션으로 이동합니다.");
+    location.href = `mission.html?id=${mission.nextMissionId || mission.id + 1}`;
+  } else {
+    alert("❌ 마지막 2자리를 다시 확인하세요.");
+  }
+}
