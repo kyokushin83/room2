@@ -960,48 +960,7 @@ function showMissionContent() {
   }
 
 
-  if (mission.quizType === "microchipScan") {
-    document.getElementById("mission").innerHTML += `
-      <div style="margin-top:16px; display:grid; gap:14px;">
 
-        <div style="background:white; border-radius:18px; padding:14px;">
-          <div style="height:180px; border:2px dashed #ccc; border-radius:14px; display:flex; align-items:center; justify-content:center; color:#777; text-align:center;">
-            댕댕이 이미지<br />실제 스캔 위치
-          </div>
-        </div>
-
-        <div style="background:white; border-radius:18px; padding:14px;">
-          <div style="height:180px; border:2px dashed #ccc; border-radius:14px; display:flex; align-items:center; justify-content:center; color:#777; text-align:center;">
-            스캐너 이미지
-          </div>
-        </div>
-
-        <div style="background:white; border-radius:18px; padding:18px;">
-          <strong>🐶 칩 번호 마지막 2자리 입력</strong>
-
-          <input
-            id="microchipAnswer"
-            maxlength="2"
-            inputmode="numeric"
-            placeholder="예: 36"
-            style="width:100%; margin-top:12px; padding:14px; border-radius:14px; border:1px solid #ccc; font-size:20px; text-align:center;"
-          />
-
-          <button
-            onclick="checkMicrochipAnswer()"
-            style="width:100%; margin-top:12px; background:#222; color:white;"
-          >
-            정답 확인하기
-          </button>
-
-          <div id="microchipMessage" style="margin-top:10px; font-size:14px; font-weight:900;"></div>
-        </div>
-
-        <div id="dogIdCardWrap"></div>
-
-      </div>
-    `;
-  }
 
 if (mission.quizType === "naverReview") {
     document.getElementById("mission").innerHTML += `
